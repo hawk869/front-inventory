@@ -37,7 +37,7 @@ export class NewCategoryComponent {
       name: this.categoryForm.get('name') ?.value,
       description: this.categoryForm.get('description') ?.value
     }
-    if ( data!=null ) {
+    if ( this.data!=null ) {
       this.categoryService.updateCategory(data, this.data.id)
         .subscribe( data => {
           this.dialogRef.close(1)
