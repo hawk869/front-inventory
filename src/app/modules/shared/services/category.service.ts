@@ -12,16 +12,16 @@ export class CategoryService {
   constructor( private http: HttpClient ) { }
 
   getCategories(){
-    const endPoint = `${base_url}/categories`;
-    return this.http.get(endPoint);
+    return this.http.get(`${base_url}/categories`);
   }
 
   saveCategory(body: any) {
-    const endPoint = `${base_url}/categories`;
-    return this.http.post(endPoint, body);
+    return this.http.post(`${base_url}/categories`, body);
   }
   updateCategory(body: any, id: any) {
-    const endPoint = `${base_url}/categories/${id}`;
-    return this.http.put(endPoint, body);
+    return this.http.put(`${base_url}/categories/${id}`, body);
+  }
+  deleteCategory( id: any ) {
+    return this.http.delete(`${base_url}/categories/${id}`);
   }
 }
