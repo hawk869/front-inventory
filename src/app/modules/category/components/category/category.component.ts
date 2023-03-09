@@ -85,6 +85,15 @@ export class CategoryComponent implements OnInit{
       }
     });
   }
+  findCategory( term: string ) {
+    if (term.length === 0){
+      return this.getCategories();
+    }
+    this.categoryService.getCategoryById(term)
+      .subscribe( response => {
+        this.processCategoryResponse( response );
+      })
+  }
   openSnackBar( menssage: string, action: string ) : MatSnackBarRef<SimpleSnackBar> {
     return this.snackBar.open(menssage,action, {
       duration: 2000

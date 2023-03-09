@@ -24,4 +24,7 @@ export class CategoryService {
   deleteCategory( id: any ) {
     return this.http.delete(`${base_url}/categories/${id}`);
   }
+  getCategoryById( id: any ){
+    return this.http.get( `${base_url}/categories/${id}`);
+  }
 }
