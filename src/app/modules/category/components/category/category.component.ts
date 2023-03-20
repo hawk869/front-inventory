@@ -41,7 +41,6 @@ export class CategoryComponent implements OnInit{
   processCategoryResponse(resp: any){
     const dataCategory: CategoryElement[] = [];
     if ( resp.metadata[0].code == '00'){
-      console.log('entro al if')
       let listCategory = resp.categoryResponse.categories;
       listCategory.forEach((element: CategoryElement) => {
         dataCategory.push(element);
