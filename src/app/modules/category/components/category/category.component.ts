@@ -31,11 +31,12 @@ export class CategoryComponent implements OnInit{
 
   getCategories(){
     this.categoryService.getCategories()
-      .subscribe( data => {
-        console.log('respuesta categorias', data);
-        this.processCategoryResponse(data);
-      }, error => {
-        console.log('error: ', error);
+      .subscribe(  {
+        next: data => {
+          console.log('respuesta categorias', data);
+          this.processCategoryResponse(data);
+        },
+        error: e => console.log('error: ', e)
       })
   }
   processCategoryResponse(resp: any){
