@@ -100,6 +100,15 @@ export class ProductComponent implements OnInit {
       }
     })
   }
+  findProduct( productName: any ){
+    if ( productName.length === 0 ){
+      return this.getAllProducts();
+    }
+    this.productService.getProductByName( productName )
+      .subscribe({
+        next: ( resp:any ) => this.processProductResponse( resp )
+      })
+  }
 }
 export interface ProductElement {
   id: number;
