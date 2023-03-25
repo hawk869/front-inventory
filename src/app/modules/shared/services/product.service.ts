@@ -16,4 +16,7 @@ export class ProductService {
   saveProduct( body: any ){
     return this.http.post(`${base_url}/products`, body);
   }
+  updateProduct( body: any, id: any ){
+    return this.http.put(`${base_url}/products/${id}`, body);
+  }
 }

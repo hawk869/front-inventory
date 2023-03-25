@@ -21,7 +21,8 @@ export class NewProductComponent implements OnInit{
               private productService: ProductService,
               private dialogRef: MatDialogRef<NewProductComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.estadoFormulario = "Agregar";
+
+    this.estadoFormulario = "Agregar nuevo";
     this.productForm = this.formBuilder.group({
       name: [ '', Validators.required ],
       price: [ '', Validators.required ],
@@ -29,6 +30,10 @@ export class NewProductComponent implements OnInit{
       category: [ '', Validators.required ],
       photo: [ '', Validators.required ]
     })
+    if ( data != null ){
+      this.updateForm(data);
+      this.estadoFormulario = 'Actualizar';
+    }
   }
   ngOnInit() {
     this.getCategories()
@@ -50,19 +55,26 @@ export class NewProductComponent implements OnInit{
     uploadImageData.append('quantity', data.quantity);
     uploadImageData.append('categoryId', data.category);
 
-    this.productService.saveProduct(uploadImageData).subscribe({
-      next: () => this.dialogRef.close(1),
-      error: () => this.dialogRef.close(2)
-    })
+    if ( this.data != null ){
+      this.productService.updateProduct( uploadImageData, this.data.id )
+        .subscribe({
+          next: () => this.dialogRef.close(1),
+          error: () => this.dialogRef.close(2)
+        })
+    }
+    else {
+      this.productService.saveProduct(uploadImageData).subscribe({
+        next: () => this.dialogRef.close(1),
+        error: () => this.dialogRef.close(2)
+      })
+    }
   }
   onCancel(){
     this.dialogRef.close(3)
   }
   getCategories(){
     this.categoryService.getCategories().subscribe({
-      next: (data: any) => {
-        this.categories = data.categoryResponse.categories
-      },
+      next: (data: any) => this.categories = data.categoryResponse.categories,
       error: err => console.log('error al consultar las categorías', err)
     })
   }
@@ -70,6 +82,15 @@ export class NewProductComponent implements OnInit{
     this.selectedFile = event.target.files[0];
     console.log(this.selectedFile);
     this.nameImage = event.target.files[0].name;
+  }
+  updateForm( data: any ){
+    this.productForm = this.formBuilder.group({
+      name: [ data.name, Validators.required ],
+      price: [ data.price, Validators.required ],
+      quantity: [ data.quantity, Validators.required ],
+      category: [ data.category.id, Validators.required ],
+      photo: [ '', Validators.required ]
+    })
   }
 }
 
