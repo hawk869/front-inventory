@@ -19,4 +19,7 @@ export class ProductService {
   updateProduct( body: any, id: any ){
     return this.http.put(`${base_url}/products/${id}`, body);
   }
+  deleteProduct( id:any ){
+    return this.http.delete(`${base_url}/products/${id}`);
+  }
 }
