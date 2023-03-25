@@ -1,0 +1,16 @@
+.product-container {
+  display: flex;
+  flex-direction: column;
+}
+.product-container > * {
+  width: 100%;
+}
+.input-file{
+  display: none;
+}
+.uploadphoto{
+  padding: 5px 16px;
+  background: #7b1fa2;
+  color: aliceblue;
+  border: 0px solid aliceblue;
+}

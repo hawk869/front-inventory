@@ -13,4 +13,7 @@ export class ProductService {
   getAllProducts(){
     return this.http.get(`${base_url}/products`);
   }
+  saveProduct( body: any ){
+    return this.http.post(`${base_url}/products`, body);
+  }
 }

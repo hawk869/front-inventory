@@ -2,6 +2,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {ProductService} from "../../shared/services/product.service";
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar, MatSnackBarRef, SimpleSnackBar} from "@angular/material/snack-bar";
+import {NewProductComponent} from "../new-product/new-product.component";
 
 @Component({
   selector: 'app-product',
@@ -10,41 +13,61 @@ import {ProductService} from "../../shared/services/product.service";
 })
 export class ProductComponent implements OnInit {
 
-  constructor( private productService: ProductService ) {
+  constructor(private productService: ProductService,
+              public dialog: MatDialog,
+              private snackBar: MatSnackBar) {
   }
+
   ngOnInit(): void {
     this.getAllProducts();
   }
 
-  displayedColumns: string[] = ['id','name','price','quantity','category','photo','actions'];
+  displayedColumns: string[] = ['id', 'name', 'price', 'quantity', 'category', 'photo', 'actions'];
   dataSource = new MatTableDataSource<ProductElement>();
 
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  getAllProducts(){
+  getAllProducts() {
     this.productService.getAllProducts().subscribe({
       next: data => this.processProductResponse(data),
       error: e => console.log(e)
     })
   }
 
-  processProductResponse( response: any ){
+  processProductResponse(response: any) {
     const dataProduct: ProductElement[] = [];
-    if ( response.metadata[0].code == "00"){
+    if (response.metadata[0].code == "00") {
       let listProducts = response.productResponse.products;
       console.log(listProducts);
-      listProducts.forEach(( element: ProductElement ) => {
+      listProducts.forEach((element: ProductElement) => {
         element.category = element.category.name;
         element.photo = 'data:image/jpeg;base64,' + element.photo;
         dataProduct.push(element);
       });
-      this.dataSource = new MatTableDataSource<ProductElement>( dataProduct );
+      this.dataSource = new MatTableDataSource<ProductElement>(dataProduct);
       this.dataSource.paginator = this.paginator;
     }
   }
-}
 
+  openProductDialog() {
+    const dialogRef = this.dialog.open(NewProductComponent, {
+      width: '450px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if( result == 1 ) {
+        this.openSnackBar('Producto agregada', 'Exitosa');
+        this.getAllProducts();
+      } else if( result == 2 ) {
+        this.openSnackBar('Se produjo un error al guardar el producto', 'Error' )
+      }
+    });
+  }
+  openSnackBar( menssage: string, action: string ) : MatSnackBarRef<SimpleSnackBar> {
+    return this.snackBar.open(menssage,action, {
+      duration: 2000
+    })
+  }
+}
 export interface ProductElement {
   id: number;
   name: string;
