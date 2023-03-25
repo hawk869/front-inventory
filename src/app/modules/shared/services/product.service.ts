@@ -22,4 +22,7 @@ export class ProductService {
   deleteProduct( id:any ){
     return this.http.delete(`${base_url}/products/${id}`);
   }
+  getProductByName( name:any ){
+    return this.http.get(`${base_url}/products/filter/${name}`);
+  }
 }
