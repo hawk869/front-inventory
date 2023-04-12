@@ -27,4 +27,9 @@ export class CategoryService {
   getCategoryById( id: any ){
     return this.http.get( `${base_url}/categories/${id}`);
   }
+  exportCategories(){
+    return this.http.get(`${base_url}/categories/export/excel`,{
+      responseType: 'blob'
+    })
+  }
 }
