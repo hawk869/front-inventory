@@ -25,4 +25,9 @@ export class ProductService {
   getProductByName( name:any ){
     return this.http.get(`${base_url}/products/filter/${name}`);
   }
+  exportProducts(){
+    return this.http.get(`${base_url}/products/export/excel`, {
+      responseType: "blob"
+    })
+  }
 }
